@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이상규 미니컷 플랜 v6</title>
+<style>
+:root{--pri:#1a1a2e;--red:#e94560;--blue:#2563eb;--green:#059669;--orange:#f97316;--purple:#7c3aed;--gray:#6b7280;--bg:#f0f2f5;--card:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:#1a1a2e;max-width:500px;margin:0 auto;-webkit-tap-highlight-color:transparent}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:20px 16px 16px;text-align:center}
+.header h1{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.header .sub{font-size:10px;opacity:.5;margin:3px 0 10px}
+.pills{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700}
+.pill.r{background:var(--red);border-color:var(--red)}.pill.b{background:var(--blue);border-color:var(--blue)}.pill.g{background:var(--green);border-color:var(--green)}.pill.p{background:var(--purple);border-color:var(--purple)}
+.tabs{display:flex;background:var(--card);border-bottom:2px solid var(--bg);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tab{flex:1;padding:11px 2px;border:none;background:transparent;font-size:10px;font-weight:600;color:#9ca3af;cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
+.tab.on{color:var(--red);border-bottom-color:var(--red)}
+.page{display:none;padding:10px 12px 80px}.page.on{display:block}
+.ec{background:var(--card);border-radius:14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.ec-h{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.ec-h .ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ec-h .txt{flex:1;min-width:0}.ec-h .ttl{font-size:13px;font-weight:700;line-height:1.3}.ec-h .stl{font-size:10px;color:var(--gray);margin-top:1px}
+.ec-h .arr{font-size:12px;color:#d1d5db;transition:transform .2s}.ec-h .arr.o{transform:rotate(180deg)}
+.ec-b{padding:0 14px 12px;display:none}.ec-b.o{display:block}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;margin-right:4px}
+.tag.push{background:#dbeafe;color:var(--blue)}.tag.pull{background:#ede9fe;color:var(--purple)}.tag.legs{background:#d1fae5;color:var(--green)}.tag.cardio{background:#fef3c7;color:var(--orange)}.tag.core{background:#fce7f3;color:#db2777}.tag.rest{background:#f3f4f6;color:var(--gray)}.tag.new{background:#ede9fe;color:var(--purple)}
+.et{width:100%;border-collapse:collapse;font-size:11px}
+.et th{text-align:left;padding:4px 0;font-size:9px;color:var(--gray);text-transform:uppercase;border-bottom:1px solid #f3f4f6}
+.et td{padding:6px 0;border-bottom:1px solid #f9fafb;vertical-align:top;line-height:1.3}
+.et td:first-child{font-weight:600;min-width:100px}.et td:last-child{color:var(--gray);font-size:10px}
+.et tr:last-child td{border:none}
+.v5{color:var(--purple);font-size:9px;font-weight:700}.v6{color:var(--red);font-size:9px;font-weight:700}
+.ml{padding:10px 0;border-bottom:1px solid #f9fafb}.ml:last-child{border:none}
+.ml-items{font-size:10px;color:var(--gray);line-height:1.5}
+.ml-mac{font-size:10px;color:var(--red);font-weight:700;margin-top:2px}
+.ml-new{font-size:10px;color:var(--purple);font-weight:600;margin-top:1px}
+.tip{border-radius:0 8px 8px 0;padding:8px 10px;font-size:11px;margin-top:8px;line-height:1.5}
+.tip.o{background:#fff7ed;border-left:3px solid var(--orange);color:#92400e}
+.tip.b{background:#eff6ff;border-left:3px solid var(--blue);color:#1e40af}
+.tip.g{background:#f0fdf4;border-left:3px solid var(--green);color:#166534}
+.tip.r{background:#fff1f2;border-left:3px solid var(--red);color:#9f1239}
+.tip.p{background:#faf5ff;border-left:3px solid var(--purple);color:#5b21b6}
+.hr{display:flex;gap:8px;align-items:flex-start;padding:8px 0;font-size:11px;line-height:1.4;border-bottom:1px solid rgba(0,0,0,.04)}.hr:last-child{border:none}
+.hr .hi{font-size:18px;flex-shrink:0;width:24px;text-align:center}
+.hr .hw{font-size:9px;color:var(--gray);font-weight:700}
+.hr strong{display:block;font-size:12px}
+.cost{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:12px;padding:12px;margin-top:8px}
+.cost-r{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}
+.cost-r:not(:last-child){border-bottom:1px solid rgba(0,0,0,.06)}
+.cost-r .v{font-weight:800;color:var(--green)}
+.cost-r.total .l,.cost-r.total .v{font-weight:800;font-size:13px}
+.pg{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.pt{border-radius:10px;padding:3px 8px;font-size:9px;font-weight:600}
+.pt.d{background:#dcfce7;color:#166534}.pt.m{background:#fef3c7;color:#92400e}.pt.w{background:#f3f4f6;color:var(--gray)}
+.pbar{height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden;margin-top:6px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:3px;transition:width .4s}
+.ck{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:11px;border-bottom:1px solid #f9fafb;line-height:1.3}
+.ck:last-child{border:none}
+.ck input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.ck.done span{text-decoration:line-through;color:var(--gray)}
+.it{display:inline-flex;align-items:center;gap:3px;background:#f3f4f6;border-radius:8px;padding:4px 9px;font-size:11px;margin:2px}
+.it.h{background:#f0fdf4;color:#166534}.it.a{background:#fef3c7;color:#92400e}.it.n{background:#ede9fe;color:var(--purple)}
+.dd{display:flex;gap:6px;justify-content:center;padding:4px 0}
+.db{text-align:center;background:#f9fafb;border-radius:10px;padding:8px 14px;min-width:56px}
+.db .n{font-size:24px;font-weight:800;color:var(--red)}.db .u{font-size:9px;color:var(--gray)}
+.dv{border-top:1px solid #f3f4f6;margin:10px 0}
+.st{font-size:11px;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;padding-left:2px}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>이상규 미니컷 플랜 v6</h1>
+<div class="sub">2026.04.28 ~ 2026.05.23 · 한랭·사우나·ART·PRI 추가</div>
+<div class="pills">
+<span class="pill" id="mc-pill">미니컷 D-?</span>
+<span class="pill r" id="sd-pill">송도 D-?</span>
+<span class="pill b">73→70kg</span>
+<span class="pill g">Mg ~391mg</span>
+<span class="pill p">v6</span>
+</div>
+</div>
+
+<div class="tabs">
+<button class="tab on" onclick="go('workout',this)">💪운동</button>
+<button class="tab" onclick="go('diet',this)">🍽식단</button>
+<button class="tab" onclick="go('sleep',this)">😴수면</button>
+<button class="tab" onclick="go('habits',this)">⚡습관</button>
+<button class="tab" onclick="go('etc',this)">📦기타</button>
+</div>
+
+<!-- ===== 운동 ===== -->
+<div id="p-workout" class="page on">
+
+<div class="st">수·목·금 — 헬스장</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#dbeafe">💦</div>
+<div class="txt"><div class="ttl">수요일 — Push</div><div class="stl">가슴 · 어깨 · 삼두 | 09:30-11:10</div></div>
+<span class="tag push">Push</span><span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<table class="et"><tr><th>운동</th><th>세트×횟수</th><th>메모</th></tr>
+<tr><td>머신 벤치 프레스</td><td>3×8-12</td><td>1-2 RIR</td></tr>
+<tr><td>숄더프레스 머신</td><td>3×8-12</td><td>1-2 RIR</td></tr>
+<tr><td>버터플라이 (펙덱)</td><td>3×12-15</td><td>1-2 RIR</td></tr>
+<tr><td>케이블 오버헤드 트라이셉스</td><td>3×12-15</td><td>마지막 0 RIR</td></tr>
+<tr><td>케이블 푸시다운 드랍세트</td><td>1세트</td><td style="color:var(--orange)">★ 선택</td></tr>
+<tr><td colspan="3" style="padding-top:6px"><span class="v5">v5</span> 아이소메트릭 런지 홀드 2×20초</td></tr>
+<tr><td colspan="3"><span class="v6">v6</span> ART 폼롤러 5분 (등·승모근)</td></tr>
+</table>
+<div class="tip r">저녁 수업 전 18:00-19:20 사이. 맛닭꼬 현미베이크 한 마리 (~100g 단백질).</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🏋</div>
+<div class="txt"><div class="ttl">목요일 — Pull</div><div class="stl">등 · 이두 · 전완 | 09:30-11:10</div></div>
+<span class="tag pull">Pull</span><span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<table class="et"><tr><th>운동</th><th>세트×횟수</th><th>메모</th></tr>
+<tr><td>풀업 (어시스트/밴드)</td><td>3×6-10</td><td>1-2 RIR</td></tr>
+<tr><td>랫풀다운</td><td>3×10-12</td><td>1-2 RIR</td></tr>
+<tr><td>인클라인 덤벨 컬</td><td>3×10-12</td><td>1-2 RIR</td></tr>
+<tr><td>프리처 컬</td><td>3×10-12</td><td>마지막 0 RIR</td></tr>
+<tr><td>시티드 리스트컬</td><td>2×15</td><td style="color:var(--orange)">★ 선택</td></tr>
+<tr><td colspan="3" style="padding-top:6px"><span class="v5">v5</span> 플랭크 홀드 2×20초</td></tr>
+<tr><td colspan="3"><span class="v6">v6</span> ART 폼롤러 5분 (광배근·전완)</td></tr>
+</table>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">🦵</div>
+<div class="txt"><div class="ttl">금요일 — Legs</div><div class="stl">대퇴 · 햄스트링 · 내전근 | 09:30-11:10</div></div>
+<span class="tag legs">Legs</span><span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<table class="et"><tr><th>운동</th><th>세트×횟수</th><th>메모</th></tr>
+<tr><td>스미스머신 스쿼트</td><td>3×8-12</td><td>1-2 RIR</td></tr>
+<tr><td>라잉 레그 컬</td><td>3×10-12</td><td>1-2 RIR</td></tr>
+<tr><td>레그 익스텐션</td><td>3×12-15</td><td>마지막 0 RIR</td></tr>
+<tr><td>이너 싸이</td><td>3×15</td><td>마지막 0 RIR</td></tr>
+<tr><td>카프레이즈</td><td>3×15-20</td><td style="color:var(--orange)">★ 선택</td></tr>
+<tr><td colspan="3" style="padding-top:6px"><span class="v5">v5</span> 스쿼트 홀드 (최저점) 2×20초</td></tr>
+<tr><td colspan="3"><span class="v6">v6</span> ART 폼롤러 5분 (대퇴·IT밴드)</td></tr>
+</table>
+</div>
+</div>
+
+<div class="st">토·일·월·화 — 집</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#f3f4f6">🎮</div>
+<div class="txt"><div class="ttl">토요일 — 치팅</div><div class="stl">친구 약속 · 치킨·피자 허용</div></div>
+<span class="tag rest">휴식</span><span class="arr">▾</span>
+</div>
+<div class="ec-b"><div class="tip o">치킨 > 피자. 닭가슴살 먼저 먹고. 주 1회 초과 금지.</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🚴</div>
+<div class="txt"><div class="ttl">일요일 — Zone 2</div><div class="stl">자전거 60분 · 심박 120-140</div></div>
+<span class="tag cardio">유산소</span><span class="arr">▾</span>
+</div>
+<div class="ec-b"><div class="tip g">대화 가능한 강도. 송도 53km 준비 + 지방 산화.</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fce7f3">🤸</div>
+<div class="txt"><div class="ttl">월요일 — 맨몸 Push+코어</div><div class="stl">집에서 · 약 35-40분</div></div>
+<span class="tag core">코어</span><span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<table class="et"><tr><th>운동</th><th>세트×횟수</th><th>메모</th></tr>
+<tr><td>일반 푸시업</td><td>3×최대</td><td>수 Push와 48h 간격</td></tr>
+<tr><td>다이아몬드 푸시업</td><td>3×최대</td><td>삼두 강조</td></tr>
+<tr><td>파이크 푸시업</td><td>2×최대</td><td>어깨</td></tr>
+<tr><td>RKC 플랭크</td><td>3×20-30초</td><td>일반 플랭크 4배 활성</td></tr>
+<tr><td>크런치</td><td>3×20</td><td>상복부</td></tr>
+<tr><td>크로스 크런치</td><td>3×15(양측)</td><td>복사근</td></tr>
+</table>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🚴</div>
+<div class="txt"><div class="ttl">화요일 — Zone 2</div><div class="stl">40-60분 · 심박 120-140</div></div>
+<span class="tag cardio">유산소</span><span class="arr">▾</span>
+</div>
+<div class="ec-b"><div class="tip b">수 Push 전날. 60분 초과 시 다음 날 퍼포먼스 저하.</div></div>
+</div>
+
+</div>
+
+<!-- ===== 식단 ===== -->
+<div id="p-diet" class="page">
+
+<div class="st">수·목·금 (헬스 날) — ~2,060kcal</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">☀️</div>
+<div class="txt"><div class="ttl">07:45 아침</div><div class="stl">달걀 3개 + 밥 + 우유</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">달걀 3개(올리브오일 조리) · 밥 한 공기 · 우유 200ml</div>
+<div class="ml-mac">단백질 ~29g · Mg ~54mg · ~660kcal</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#dbeafe">💪</div>
+<div class="txt"><div class="ttl">11:15 운동후</div><div class="stl">닭가슴살 한 덩이 (~35g 단백질)</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div class="ml-items">헬스장 나오면서 바로 섭취. ~165kcal</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">🍱</div>
+<div class="txt"><div class="ttl">12:30 점심</div><div class="stl">닭가슴살 + 스파게티 + 브로콜리</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">닭가슴살 120-150g + 스파게티 100g(건면) + 토마토소스 반 캔 + 냉동 브로콜리 한 줌</div>
+<div class="ml-mac">단백질 ~48g · ~640kcal</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🍫</div>
+<div class="txt"><div class="ttl">16:00 간식</div><div class="stl">우유 + 아몬드 30알 + 다크초콜릿 82%</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">우유 200ml + 아몬드 30알 + 다크초콜릿 82% 20g</div>
+<div class="ml-mac">단백질 ~14g · Mg ~127mg · ~380kcal</div>
+<div class="ml-new">v6: 아몬드 30알(Mg 120mg) + 다크초콜릿(Mg 45mg)</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🐟</div>
+<div class="txt"><div class="ttl">18:30 저녁</div><div class="stl">고등어 + 달걀 1개 + 밥 + 나물 + 멸치</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">고등어 1마리(150g) · 달걀 1개 · 밥 반 공기 · 볶음멸치 30g · 나물(엄마 반찬) · 김치</div>
+<div class="ml-mac">단백질 ~44g · 오메가3 ~2.5g · 비타민D ~700IU · 칼슘 ~410mg · ~550kcal</div>
+<div class="tip g" style="margin-top:4px">고등어 먹는 날 오메가-3 영양제 스킵. 삼치·꽁치 교대 가능. 나물=미나리·더덕·참나물 등 자유.</div>
+<div class="tip b" style="margin-top:4px">🐟 <strong>미역국 주 1회 이상</strong> — 철분 보강 + 요오드 공급. 엄마 나물 로테이션에 편입.</div>
+</div>
+</div>
+
+<div class="cost">
+<div class="cost-r"><span class="l">헬스 날</span><span class="v">~7,800원</span></div>
+<div class="cost-r"><span class="l">비헬스 날</span><span class="v">~6,800원</span></div>
+<div class="cost-r"><span class="l">주간 식비</span><span class="v">~50,000원</span></div>
+<div class="cost-r total"><span class="l">한 달</span><span class="v">~215,000원</span></div>
+</div>
+
+<div class="tip g" style="margin-top:8px"><strong>단백질:</strong> 달걀4(24) + 우유×2(14) + 닭×2(70) + 스파게티(13) + 고등어(29) + 아몬드(9) + 다크초콜릿(1) = <strong>~160g ✅</strong></div>
+<div class="tip o" style="margin-top:4px"><strong>마그네슘:</strong> 아몬드30(120) + 다크초콜릿(45) + 우유(44) + 고등어(26) + 밥(40) + 나물류(40) + 기타(76) = <strong>~391mg ✅</strong></div>
+<div class="tip b" style="margin-top:4px"><strong>칼슘:</strong> 우유 400ml(440) + 멸치 30g(300) + 달걀4(112) + 나물(40) + 기타(50) = <strong>~942mg ✅</strong></div>
+
+<div class="dv"></div>
+<div class="st">토·일·월·화 (비헬스 날)</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">☀️</div>
+<div class="txt"><div class="ttl">08:00 아침</div><div class="stl">달걀 2개 + 밥 반 공기 + 우유</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">달걀 2개(올리브오일) · 밥 반 공기 · 우유 200ml</div>
+<div class="ml-mac">단백질 ~22g · ~430kcal</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">🍱</div>
+<div class="txt"><div class="ttl">12:30 점심</div><div class="stl">닭가슴살 + 밥 + 김치 + 나물 + 멸치</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">닭가슴살 150g · 밥 한 공기 · 김치 · 나물(엄마 반찬) · 볶음멸치 3큰술</div>
+<div class="ml-mac">단백질 ~40g · ~530kcal</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🍫</div>
+<div class="txt"><div class="ttl">15:30 간식</div><div class="stl">닭가슴살 반 팩 + 우유 + 아몬드 + 다크초콜릿</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">닭가슴살 100g + 우유 200ml + 아몬드 15알 + 다크초콜릿 20g</div>
+<div class="ml-mac">단백질 ~35g · Mg ~105mg · ~470kcal</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🐟</div>
+<div class="txt"><div class="ttl">19:00 저녁</div><div class="stl">고등어(삼치·꽁치) + 달걀 1개 + 밥 반 공기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div class="ml-items">고등어 1마리(150g) · 달걀 1개 · 밥 반 공기 · 나물 · 김치</div>
+<div class="ml-mac">단백질 ~42g · ~520kcal</div>
+<div class="tip g">비헬스 날: 단백질 ~139g · Mg ~385mg ✅</div>
+</div>
+</div>
+
+<div class="dv"></div>
+<div class="st">30 식물 다양성</div>
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">🌿</div>
+<div class="txt"><div class="ttl">주간 식물 체크 (30 Plants Rule)</div><div class="stl">탭하여 전체 목록 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:10px;color:var(--gray);margin-bottom:6px">매주 30가지+ 식물성 식품 = 장내 미생물 다양성</div>
+<div class="pg">
+<span class="pt d">1.쌀</span><span class="pt d">2.밀</span><span class="pt d">3.마늘</span><span class="pt d">4.파</span><span class="pt d">5.고추</span><span class="pt d">6.배추</span><span class="pt d">7.토마토</span><span class="pt d">8.브로콜리</span>
+<span class="pt m">9.미나리</span><span class="pt m">10.더덕</span><span class="pt m">11.참나물</span><span class="pt m">12.엄나무순</span><span class="pt m">13.오이</span><span class="pt m">14.양파</span><span class="pt m">15.버섯</span><span class="pt m">16.콩나물</span><span class="pt m">17.무</span><span class="pt m">18.애호박</span><span class="pt m">19.시래기</span>
+<span class="pt w">20.아몬드</span><span class="pt w">21.카카오</span><span class="pt w">22.올리브</span><span class="pt w">23.고구마</span><span class="pt w">24.양배추</span><span class="pt w">25.파프리카</span><span class="pt w">26.생강</span><span class="pt w">27.김</span><span class="pt w">28.귀리</span><span class="pt w">29.딸기</span><span class="pt w">30.키위</span><span class="pt w">31.미역</span>
+</div>
+<div style="font-size:9px;color:var(--gray);margin-top:6px">
+<span style="background:#dcfce7;padding:1px 5px;border-radius:3px">매일</span>
+<span style="background:#fef3c7;padding:1px 5px;border-radius:3px">엄마 반찬</span>
+<span style="background:#f3f4f6;padding:1px 5px;border-radius:3px">주 1-2회</span>
+</div>
+</div>
+</div>
+
+<div class="st">식재료</div>
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#f0fdf4">🛒</div>
+<div class="txt"><div class="ttl">식재료 현황</div><div class="stl">탭하여 상세 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="margin-bottom:6px"><div style="font-size:9px;color:var(--gray);font-weight:700;margin-bottom:4px">기존 보유</div>
+<span class="it h">쌀</span><span class="it h">파스타면</span><span class="it h">김치</span><span class="it h">나물</span><span class="it h">닭가슴살</span><span class="it h">폼롤러</span>
+</div>
+<div style="margin-bottom:6px"><div style="font-size:9px;color:var(--orange);font-weight:700;margin-bottom:4px">구매 필요</div>
+<span class="it a">달걀 30알</span><span class="it a">우유 1L</span><span class="it a">고등어/삼치 3-4마리</span><span class="it a">볶음멸치</span><span class="it a">냉동 브로콜리</span><span class="it a">토마토소스</span><span class="it a">아몬드</span><span class="it a">올리브오일</span>
+</div>
+<div><div style="font-size:9px;color:var(--purple);font-weight:700;margin-bottom:4px">v6 추가</div>
+<span class="it n">다크초콜릿 82%</span>
+</div>
+</div>
+</div>
+
+<div class="st">영양제</div>
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">💊</div>
+<div class="txt"><div class="ttl">영양제 (최소)</div><div class="stl">고등어 못 먹은 날만 오메가-3</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.8">
+<strong>오메가-3</strong> — 고등어 못 먹은 날만 700mg<br>
+<strong>비타민 D</strong> — 고등어 매일(700IU) + 햇빛 15-20분<br>
+<strong>비타민 K2</strong> — 김치 + 달걀 노른자 + 우유로 충분<br>
+<strong>마그네슘</strong> — 아몬드 30알(120mg) + 다크초콜릿(45mg) + 식단으로 ~391mg<br>
+<strong style="color:var(--orange)">크레아틴</strong> — 5/23 이후 보류
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ===== 수면 ===== -->
+<div id="p-sleep" class="page">
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#dbeafe">🕐</div>
+<div class="txt"><div class="ttl">수면 목표: 04:00 → 23:30</div><div class="stl">30분씩 당기기 · 이번 주: 3:30 취침</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="display:flex;justify-content:space-around;align-items:center;padding:10px 0">
+<div style="text-align:center"><div style="font-size:9px;color:var(--gray)">현재</div><div style="font-size:22px;font-weight:800">04:00</div></div>
+<div style="font-size:14px;color:#d1d5db">→</div>
+<div style="text-align:center"><div style="font-size:9px;color:var(--gray)">목표</div><div style="font-size:22px;font-weight:800;color:var(--green)">23:30</div></div>
+<div style="font-size:14px;color:#d1d5db">→</div>
+<div style="text-align:center"><div style="font-size:9px;color:var(--gray)">기상</div><div style="font-size:22px;font-weight:800">07:30</div></div>
+</div>
+<div class="tip g">급하게 바꾸면 역효과. 이번 주: 3:30 취침.</div>
+</div>
+</div>
+
+<div class="st">아침 각성 루틴</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🌅</div>
+<div class="txt"><div class="ttl">기상 직후 루틴</div><div class="stl">햇빛 → CARs → PRI → 물 → 아침 → 세수</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.8">
+<strong>1. 햇빛 15-20분</strong> — 팔 노출. 서카디안 리듬 + 비타민D<br>
+<strong>2. CARs 3분</strong> — 관절 6포인트 회전<br>
+<strong>3. PRI 90-90 호흡 10분</strong> — 벽에 발 대고 완전히 내쉬기. 흉곽 교정.<br>
+<strong>4. 물 300ml</strong><br>
+<strong>5. 아침 식사</strong><br>
+<strong>6. 세수 + 찬물 손씻기</strong>
+</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🔄</div>
+<div class="txt"><div class="ttl">CARs 가이드 (3분)</div><div class="stl">아프지 않은 범위에서</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.7">
+<strong>1. 발목</strong> 원 그리기 10회 (양측)<br>
+<strong>2. 무릎</strong> 구부렸다 폈다 10회<br>
+<strong>3. 고관절</strong> 다리 들어 원 10회 (양측)<br>
+<strong>4. 척추</strong> 좌우 회전 10회<br>
+<strong>5. 어깨</strong> 팔 뻗어 원 10회 (양측)<br>
+<strong>6. 목</strong> 원 그리기 10회 (양측)
+</div>
+</div>
+</div>
+
+<div class="st">수면 위생</div>
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#f0fdf4">🛏</div>
+<div class="txt"><div class="ttl">수면 위생 체크리스트</div><div class="stl">탭하여 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.8">
+✓ 저녁 19:00 이전 완료<br>
+✓ 취침 1시간 전 스크린 밝기 최소<br>
+✓ 카페인 15시 이후 금지<br>
+✓ 수면 6h 이하 → 헬스 강도 낮추기<br>
+△ 잠 안 올 때: <strong>생리적 한숨</strong> (코→코→입 길게)
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ===== 습관 ===== -->
+<div id="p-habits" class="page">
+
+<div class="st">매일</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🌅</div>
+<div class="txt"><div class="ttl">햇빛 15분</div><div class="stl">기상 직후 · 팔 노출</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div style="font-size:11px">비오면 실내 창가. 불가침.</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🔄</div>
+<div class="txt"><div class="ttl">CARs 3분 + PRI 10분</div><div class="stl">기상 직후 · 관절 6포인트 + 흉곽 교정</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div style="font-size:11px;line-height:1.6">
+<strong>CARs:</strong> 발목→무릎→고관절→척추→어깨→목. 각 10회.<br>
+<strong>PRI:</strong> 누워서 벽에 발 90도, 입으로 완전히 내쉬기 10분.
+</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#dbeafe">⏰</div>
+<div class="txt"><div class="ttl">50+10 포모도로</div><div class="stl">공부·코딩 · 10분엔 일어나기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div style="font-size:11px">하루 앉아있는 시간 8h 이내.</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fee2e2">🧊</div>
+<div class="txt"><div class="ttl">한랭 노출 <span class="tag new">v6</span></div><div class="stl">샤워 마지막 찬물 · 30초부터 → 목표 1-3분</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.6">
+<strong>방법:</strong> 일반 샤워 끝나고 찬물 온몸에. 참을 수 있는 최저 온도.<br>
+<strong>진행:</strong> 30초부터 → 매주 30초 증가 → 목표 1-3분<br>
+<strong>효과:</strong> 도파민 250% ↑ (4시간 지속), 갈색지방 활성<br>
+<strong>서베르그 원칙:</strong> 찬물 후 따뜻한 수건·온수로 덥히지 말 것. 스스로 떨게 방치 → 갈색지방 전환 극대화
+</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">💨</div>
+<div class="txt"><div class="ttl">생리적 한숨</div><div class="stl">스트레스·잠 안 올 때</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div style="font-size:11px">코로 깊게 → 한 번 더 짧게 → 입으로 길게. 즉각 진정.</div></div>
+</div>
+
+<div class="dv"></div>
+<div class="st">운동 날 (수·목·금)</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">🧱</div>
+<div class="txt"><div class="ttl">등척성 홀딩 20초×2</div><div class="stl">수:런지 / 목:플랭크 / 금:스쿼트홀드</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b"><div style="font-size:11px">건·인대 콜라겐 합성. 부상 예방.</div></div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#d1fae5">🧶</div>
+<div class="txt"><div class="ttl">ART 폼롤러 5분 <span class="tag new">v6</span></div><div class="stl">핀앤무브 기법 · 발통점 누른 상태에서 관절 굽히고 펴기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.6">
+<strong>방법:</strong> 롤러/볼로 발통점을 강하게 누름(Pin) → 팔다리 관절을 끝까지 굽히고 폼(Move)<br>
+<strong>부위:</strong> 수: 등·승모근 / 목: 광배근·전완 / 금: 대퇴·IT밴드<br>
+<strong>효과:</strong> 유착 근막 제거, 활주성 복원
+</div>
+<div class="tip p">정적 스트레칭보다 효과 좋음. 운동 전에 해도 됨.</div>
+</div>
+</div>
+
+<div class="dv"></div>
+<div class="st">휴식일 전용</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fee2e2">🔥</div>
+<div class="txt"><div class="ttl">사우나 프로토콜 <span class="tag new">v6</span></div><div class="stl">토요일 · 80-100℃ 15-30분 + 찬물 5분</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.6">
+<strong>방법:</strong> 사우나 15-30분 → 찬물 샤워 5분 = 1세트<br>
+<strong>진행:</strong> 1세트부터 → 적응 후 2-3세트<br>
+<strong>효과:</strong> 성장호르몬 ↑↑, 열충격단백질 합성, 근육 재생
+</div>
+<div class="tip r">식후 혈당 안정된 상태에서. 수분 충분히 섭취 후.</div>
+</div>
+</div>
+
+<div class="dv"></div>
+<div class="st">주간 체크리스트</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#dbeafe">📋</div>
+<div class="txt"><div class="ttl">이번 주 습관 체크</div><div class="stl">탭하여 열기 · 체크 상태 저장됨</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b" id="week-checks">
+<div class="ck"><input type="checkbox" data-k="sun-z2"><span>일 Zone 2 60분</span></div>
+<div class="ck"><input type="checkbox" data-k="mon-home"><span>월 홈트 (푸시업+코어)</span></div>
+<div class="ck"><input type="checkbox" data-k="tue-z2"><span>화 Zone 2 40-60분</span></div>
+<div class="ck"><input type="checkbox" data-k="cheat"><span>토 치팅 1회 이내</span></div>
+<div class="ck"><input type="checkbox" data-k="weight"><span>월 아침 공복 체중</span></div>
+<div class="ck"><input type="checkbox" data-k="sauna"><span>토 사우나 1세트+ <span style="color:var(--purple);font-weight:700">v6</span></span></div>
+<div class="ck"><input type="checkbox" data-k="seaweed"><span>미역국 1회 이상</span></div>
+</div>
+</div>
+
+<div class="dv"></div>
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#f3f4f6">🚫</div>
+<div class="txt"><div class="ttl">안 하는 것 (Tier 3)</div><div class="stl">탭하여 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;color:var(--gray);line-height:1.7">
+노르웨이 4x4 · 욕조 한랭 담금 · HRV 바이오피드백 · NMN · GlyNAC · 스퍼미딘 · 피세틴 · 레스베라트롤 · 메틸렌 블루 · 수면 보충제<br><br>
+<span style="color:#1a1a2e;font-weight:700">→ 루틴 안정화 후 고려</span>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ===== 기타 ===== -->
+<div id="p-etc" class="page">
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fee2e2">⏳</div>
+<div class="txt"><div class="ttl">D-day 카운트다운</div><div class="stl">탭하여 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="margin-bottom:10px">
+<div style="font-size:10px;color:var(--gray);font-weight:700;margin-bottom:4px">미니컷 종료 (5/23)</div>
+<div class="dd"><div class="db"><div class="n" id="mc-d">-</div><div class="u">일</div></div></div>
+<div class="pbar"><div class="pfill" id="mc-p" style="width:0%"></div></div>
+</div>
+<div style="margin-top:10px">
+<div style="font-size:10px;color:var(--red);font-weight:700;margin-bottom:4px">송도 53km (5/24)</div>
+<div class="dd"><div class="db"><div class="n" id="sd-d">-</div><div class="u">일</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#f0fdf4">⚖️</div>
+<div class="txt"><div class="ttl">체중 추적</div><div class="stl">매주 월 아침 공복 · 73kg → 70-71kg</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.8">
+<strong>주간 목표:</strong> 0.5-0.75kg 감소<br>
+<strong>1kg+ 빠지면:</strong> 칼로리 150 올리기<br>
+<strong>0.3kg 미만:</strong> 탄수 100g 줄이기
+</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#fef3c7">🍺</div>
+<div class="txt"><div class="ttl">음주 규칙</div><div class="stl">탭하여 상세 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.8">
+<span style="color:var(--green);font-weight:700">일</span> 최적. 치팅+음주.<br>
+<span style="color:var(--green);font-weight:700">토</span> 차선.<br>
+<span style="color:var(--orange);font-weight:700">월</span> 2잔 이내.<br>
+<span style="color:var(--red);font-weight:700">화·수·목·금</span> 비권장. 불가피하면 오전 헬스 먼저.
+</div>
+<div class="tip r">운동 직후 알코올 = MPS 37% ↓. 2잔 이내, 단백질 안주 먼저.</div>
+</div>
+</div>
+
+<div class="ec">
+<div class="ec-h" onclick="tog(this)">
+<div class="ico" style="background:#ede9fe">📝</div>
+<div class="txt"><div class="ttl">변경 이력</div><div class="stl">탭하여 보기</div></div>
+<span class="arr">▾</span>
+</div>
+<div class="ec-b">
+<div style="font-size:11px;line-height:1.7">
+<strong style="color:var(--orange)">v5:</strong> 등척성 홀딩 · 폼롤러 · 호박씨·바나나·다크초콜릿·시금치·당근·블루베리 · 30 식물 · CARs · 생리적 한숨<br><br>
+<strong style="color:var(--purple)">v6:</strong> 호박씨·바나나·시금치·당근·블루베리 제거 (엄마 나물로 커버) → 아몬드 30알 + 다크초콜릿 82%로 Mg 보충 · ART 핀앤무브 폼롤러 · PRI 90-90 호흡 · 한랭 노출 상세화 · 사우나 프로토콜 · UI 전면 개편 (접이식 카드·체크리스트 저장)
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function go(n,btn){
+document.querySelectorAll('.page').forEach(e=>e.classList.remove('on'));
+document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));
+document.getElementById('p-'+n).classList.add('on');
+btn.classList.add('on');
+}
+function tog(h){
+const b=h.nextElementSibling;const a=h.querySelector('.arr');
+b.classList.toggle('o');a.classList.toggle('o');
+}
+function calc(){
+const t=new Date();t.setHours(0,0,0,0);
+const s=new Date('2026-04-28'),e=new Date('2026-05-23'),sd=new Date('2026-05-24');
+const mr=Math.ceil((e-t)/864e5);
+document.getElementById('mc-d').textContent=mr>0?mr:'종료!';
+document.getElementById('mc-pill').textContent='미니컷 D-'+(mr>0?mr:'종료');
+const tot=(e-s)/864e5,pass=Math.max(0,(t-s)/864e5);
+document.getElementById('mc-p').style.width=Math.min(100,pass/tot*100).toFixed(1)+'%';
+const sr=Math.ceil((sd-t)/864e5);
+document.getElementById('sd-d').textContent=sr>0?sr:'D-Day!';
+document.getElementById('sd-pill').textContent='송도 D-'+(sr>0?sr:'0');
+}
+function saveChecks(){
+const d={};
+document.querySelectorAll('#week-checks input[type=checkbox]').forEach(c=>{d[c.dataset.k]=c.checked});
+localStorage.setItem('hc_'+getWeekKey(),JSON.stringify(d));
+}
+function loadChecks(){
+const d=JSON.parse(localStorage.getItem('hc_'+getWeekKey())||'{}');
+document.querySelectorAll('#week-checks input[type=checkbox]').forEach(c=>{
+c.checked=!!d[c.dataset.k];if(c.checked)c.closest('.ck').classList.add('done');
+});
+}
+function getWeekKey(){
+const d=new Date(),day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);
+const mon=new Date(d);mon.setDate(diff);return mon.toISOString().slice(0,10);
+}
+document.querySelectorAll('#week-checks input[type=checkbox]').forEach(c=>{
+c.addEventListener('change',function(){
+this.closest('.ck').classList.toggle('done',this.checked);saveChecks();
+});
+});
+calc();loadChecks();
+</script>
+</body>
+</html>
